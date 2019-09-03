@@ -4,6 +4,8 @@ import Logo from './components/Logo/Logo.js';
 import Rank from './components/Rank/Rank.js';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm.js';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition.js';
+import Signin from './components/Signin/Signin.js';
+import Register from './components/Register/Register.js';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
 
@@ -21,7 +23,7 @@ const particlesOptions = {
 
 const App = () => {
   
-/*  constructor() { //New react func useState removes need of constructor
+/*  constructor() { //New react func useState removes need of classes and hence constructor 
     super();
     this.state = {
       input: '',
@@ -30,6 +32,8 @@ const App = () => {
 */
   const [input, setInput] = useState(' ');
   const [box, setBox] = useState(' ');
+  const [route, setRoute] = useState('signIn');
+  const [signedIn, setSignedIn] = useState(false);
   
   const app = new Clarifai.App({
     apiKey: 'b8f9deab7a7946c7a17ba43972b3b69a'
@@ -72,26 +76,43 @@ const App = () => {
         function(err) {
           console.log('Something went wrong' + err);
         }
-      // ...or with deconstruct and promises:
-      /*
-      app.models.predict(
-      Clarifai.FACE_DETECT_MODEL, input)
-      .then(response => calculateFaceLocation(response)
-      .catch(err = console.log(err)); */ 
-      );
+        // ...or with deconstruct and promises:
+        /*
+        app.models.predict(
+        Clarifai.FACE_DETECT_MODEL, input)
+        .then(response => calculateFaceLocation(response)
+        .catch(err = console.log(err)); */ 
+        );
   }
 
  
-  //render() 
+  //render() //part of constuctor
+  const onRouteChange = (reroute) => {
+    if (reroute === 'signOut') {
+      setSignedIn(false);
+    }
+    else if (reroute === 'home') { 
+      setSignedIn(true);
+    }
+  setRoute(reroute); 
+  } 
 
   return (
     <div className="App">
       <Particles className='particles' params={particlesOptions} />
-      <Navigation />
-      <Logo />
-      <Rank />
-      <ImageLinkForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit}/>
-      <FaceRecognition box={box} imageUrl={input} /> 
+      <Navigation signedIn={signedIn} onRouteChange={onRouteChange} />
+      { route === 'home' //if route = home...
+      ? <div>              
+          <Logo /> 
+          <Rank />
+          <ImageLinkForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit}/>
+          <FaceRecognition box={box} imageUrl={input} /> 
+        </div> //...else return this <div> 
+      : (route === 'signIn'
+        ? <Signin onRouteChange = {onRouteChange} />         //...then return signin form 
+        : <Register onRouteChange = {onRouteChange} />
+        )
+      } 
     </div>
   );
 }
