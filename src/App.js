@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, /* useEffect */} from 'react';
 import Navigation from './components/Navigation/Navigation.js';
 import Logo from './components/Logo/Logo.js';
 import Rank from './components/Rank/Rank.js';
@@ -39,6 +39,12 @@ const App = () => {
     apiKey: 'b8f9deab7a7946c7a17ba43972b3b69a'
    });
 
+ /*  useEffect(() => {
+    fetch('http://localhost:3000')
+    .then(response => response.json()) 
+    .then(console.log)
+  })
+ */
   const onInputChange = (event) => {
     console.log(event.target.value);
     setInput(event.target.value);
@@ -57,6 +63,7 @@ const App = () => {
       bottomRow: imageHeight - (clarifaiFace.bottom_row * imageHeight)
     }
   }
+
 
   const displayFaceBox = (boxParams) => {
     setBox(boxParams);
