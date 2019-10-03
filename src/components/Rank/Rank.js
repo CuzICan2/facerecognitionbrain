@@ -1,13 +1,14 @@
 import React from 'react';
 
-const Rank = () => {
+const Rank = ({user}) => {
+    console.log(user.name, user.entries);
     return (
        <div>
             <div className='f3 white'>
-                {'Niclas, your current rank is...'}
+                {'Welcome ' + user.name +  ', your current rank is...'}
             </div>
             <div className='f1 white'>
-                {'#5'}
+                {user.entries}
             </div>
        </div>
 /*        <nav style={{display: 'flex', justifyContent: 'flex-end'}}>
